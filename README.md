@@ -321,12 +321,26 @@ docker-compose up -d --build
  docker-compose down -v
 ```
 
+## production release
 
 
 
+create docker-compose.dev.yml
+docker-compose.prod.yml                                                                  prod stands for production
+docker-compose.yml files
 
 
-
+### in docker-compose.yml
+```
+version: "3"
+services:
+  node-app:
+    build: .
+    ports:
+      -"3000:3000"
+    environment:
+      - PORT=3000
+```
 
 
 
