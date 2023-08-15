@@ -1,5 +1,48 @@
-# node-express-docker-beginer
+# node-express-docker-beginer4
 
+## cheat sheet
+
+###  build image
+```
+build -t node-app-image
+```
+
+### list all images
+```
+docker image ls
+```
+
+### remove image
+```
+docker image rm
+```
+
+### run image (if image is running then it is called container
+
+```
+docker run -p 3000:3000 -d --name node-app node-app-image  
+```
+
+3000:300 sending traffic comming from locolhost 3000 to docker port 3000
+
+node-app is container name
+
+### list of containers
+```
+docker ps
+```
+
+### deleteing container
+```
+docker rm node-app -f
+```
+
+
+### execute docker container
+```
+docker exec -it node-app bash
+```
+----------------------------------------------------------------------------------------->
 
 ### set up 
 ```
@@ -40,17 +83,28 @@ CMD ["node","index.js"]
 #### creating image
 
 ```
-docker build .
+build -t node-app-image
 ```
 
-## cheat sheet
-
-### list all images
 ```
 docker image ls
 ```
 
-### remove image
+### container
 ```
-docker image rm
+docker run -p 3000:3000 -d --name node-app node-app-image  
 ```
+```
+docker ps
+```4
+
+### execute docker container
+```
+docker exec -it node-app bash
+```
+
+```
+ls
+```
+
+## Docker ignore file
