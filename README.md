@@ -337,12 +337,69 @@ services:
   node-app:
     build: .
     ports:
-      -"3000:3000"
+      - "3000:3000"
     environment:
       - PORT=3000
 ```
+### in docker-compose.dev.yml
+```
+version: "3"
+services:
+  node-app:
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=developement
+    command: npm run dev
+```
+
+### in docker-composoe.prod.yml
+```
+version: "3"
+services:
+  node-app:
+    environment:
+      - NODE_ENV=production
+    command: node index.js
+```
 
 
+
+### in dockerfile
+```
+FROM node:18
+WORKDIR /app
+COPY package.json .
+RUN npm install
+#copy all files from current folder
+COPY . ./            
+ENV PORT 3000
+EXPOSE $PORT
+CMD ["node","index.js"]
+```
+
+### to run  devlopment ready code
+```
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+```
+```
+ docker-compose -f docker-compose.yml -f docker-compose.dev.yml down -v
+```
+
+### to run  production ready code
+
+```
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+```
+since in production there is no volume attached 
+
+so need to rebuild image
+```
+ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+```
+
+1:34 min
 
 
 
