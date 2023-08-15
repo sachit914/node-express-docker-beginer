@@ -61,6 +61,30 @@ docker run -v pathtofolderonlocation:pathtofolderoncontainer -p 3000:3000 -d --n
 ```
 docker logs containername
 ```
+### list all volumes
+```
+docker volume ls
+```
+
+### delete unecessary volumes
+```
+docker volume prune
+```
+
+or delete volume when we delete container
+
+```
+docker rm node-app -fv
+```
+### create docker image by docker-compose
+automantically runs 
+```
+docker-compose up -d --build
+```
+### delete docker container by docker-compose
+```
+ docker-compose down -v
+```
 ----------------------------------------------------------------------------------------->
 
 ### set up 
@@ -75,6 +99,22 @@ npm i express
 ```
 node index.js
 ```
+
+```
+const express = require("express")
+
+const app = express()
+
+app.get("/",(req,res)=>{
+    res.send("<h2>Hello there</h2>")
+})
+
+const port= process.env.PORT|| 3000;
+
+app.listen(port,()=> console.log(`listening on port ${port}`));
+
+```
+
 
 http://localhost:3000/
 
@@ -214,12 +254,72 @@ CMD ["npm","run","dev"]
 docker logs node-app
 ```
 
-## environment variables in docker
+## environment variables in docker   55: 19
+
+```
+FROM node:18
+WORKDIR /app
+COPY package.json .
+RUN npm install
+#copy all files from current folder
+COPY . ./            
+ENV PORT 3000
+EXPOSE $PORT
+CMD ["npm","run","dev"]
+```
+
+```
+docker run -v ${pwd}:/app:ro -v/app/node_modules --env PORT=4000 -p 3000:4000 -d
+ --name node-app node-app-image
+```
+
+```
+docker exec -it node-app bash
+```
+
+```
+printenv
+```
+
+other approach is create a file that stores all our environment variable
+
+create .env file
+
+```
+docker run -v ${pwd}:/app:ro -v/app/node_modules --env-file ./.env -p 3000:4000 -d --name node-app node-app-image
+```
 
 
+## docker compose file          1: 06
 
+create docker-compose.yml file
 
+replacment for docker run -v ${pwd}:/app:ro -v/app/node_modules --env-file ./.env -p 3000:4000 -d --name node-app node-app-image
 
+```
+version:"3"
+# version of docker compose
+# specififying all the containers we want to create
+services:
+#node-app is name of container
+  node-app:
+    #what image are we using
+    build: .         #in current folder dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    environment:
+      - PORT=3000
+```
+```
+docker-compose up -d --build
+```
+
+```
+ docker-compose down -v
+```
 
 
 
