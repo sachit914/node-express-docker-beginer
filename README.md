@@ -96,7 +96,7 @@ docker run -p 3000:3000 -d --name node-app node-app-image
 ```
 ```
 docker ps
-```4
+```
 
 ### execute docker container
 ```
