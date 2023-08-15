@@ -399,7 +399,7 @@ so need to rebuild image
  docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
 ```
 
-1:34 min
+1:34:33  min
 
 
 
