@@ -308,10 +308,12 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./:/app
-      - /app/node_modules
+      - ./:/app                      // . means syncing current folder to /app in container
+      - /app/node_modules            //random volume given in container side
     environment:
       - PORT=3000
+
+
 ```
 ```
 docker-compose up -d --build
@@ -484,11 +486,89 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: root
 ```
 
+```
+ docker exec -it dockernodejsexpress-mongo-1 bash
+```
 
+```
+mongosh -u "root" -p "root"
+```
+### approach1
+```
+docker exec -it node-docker_mogo_1 mongo -u "usernam
+e" -p "password"
+```
+### approach 2                use this approach
 ```
 docker exec -it dockernodejsexpress-mongo-1 bash
 ```
+
+mongosh shell will be opened
 ```
- mongo -u "username" -p "password"
+mongosh --host <container-ip> --port 27017 -u ro585u985o -p r5595809 --authenticationDatabase admin
 ```
 
+### to get container ip
+```
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' containername
+```
+#### create new db
+```
+use mydb
+```
+ it wont show empty db so create collection first
+#### show all db
+```
+show dbs
+```
+```
+db.books.insertOne({ name: "Alice" })
+```
+
+```
+show dbs
+```
+
+```
+db.books.find()
+```
+
+## loosing db data when we delete the server  1:52:14
+```
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml down -v
+```
+giving volume
+```
+version: "3"
+services:
+  node-app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    volumes:
+      - mongo-db:/data/db                              //mongo-db is name of volume
+
+volumes:                         //specify volume
+  mongo-db:
+```
+
+```
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml down  
+```
+dont use -v at last while delting
+
+
+```
+docker volume -ls
+```
+
+## 1: 59 :22
