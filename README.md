@@ -489,6 +489,6 @@ services:
 docker exec -it dockernodejsexpress-mongo-1 bash
 ```
 ```
-- mongo -u "username" -p "password
+ mongo -u "username" -p "password"
 ```
 
