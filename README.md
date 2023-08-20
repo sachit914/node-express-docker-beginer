@@ -414,7 +414,7 @@ WORKDIR /app
 COPY package.json .
 # RUN npm install 
 ARG NODE_ENV
-RUN IF [ "$NODE_ENV"="development"]; \
+RUN if [ "$NODE_ENV"="development"]; \
     then npm install; \
     else npm install --only=production; \
     fi 
@@ -427,7 +427,7 @@ CMD ["node","index.js"]
 
 ### in docker_compse_dev.yml
 
-````
+```
 version: "3"
 services:
   node-app:
@@ -441,6 +441,7 @@ services:
     environment:
       - NODE_ENV=developement
     command: npm run dev
+
 ```
 ### in docker_compose_prod.yml make this changes
 ```
@@ -451,10 +452,43 @@ build:
 ```
 
 
+get the server down 
+```
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml down -v
+```
+
+```
+ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
+```
 
 
 
+## adding Mongo database       1:45 : 10 
+
+### in docker-compose.yml file
+
+```
+version: "3"
+services:
+  node-app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+
+  mongo:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+```
 
 
-
+```
+docker exec -it dockernodejsexpress-mongo-1 bash
+```
+```
+- mongo -u "username" -p "password
+```
 
