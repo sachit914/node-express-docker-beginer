@@ -401,5 +401,60 @@ so need to rebuild image
 
 1:34:33  min
 
+```
+docker exec -it dockernodejsexpress-node-app-1 bash
+```
+
+```
+ls
+```
+```
+FROM node:18
+WORKDIR /app
+COPY package.json .
+# RUN npm install 
+ARG NODE_ENV
+RUN IF [ "$NODE_ENV"="development"]; \
+    then npm install; \
+    else npm install --only=production; \
+    fi 
+#copy all files from current folder
+COPY . ./            
+ENV PORT 3000
+EXPOSE $PORT
+CMD ["node","index.js"]       
+```
+
+### in docker_compse_dev.yml
+
+````
+version: "3"
+services:
+  node-app:
+    build:                             //
+      context: .                        //
+      args:                             //
+        NODE_ENV: development           // make this changes
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=developement
+    command: npm run dev
+```
+### in docker_compose_prod.yml make this changes
+```
+build: 
+      context: .
+      args:
+        NODE_ENV: production
+```
+
+
+
+
+
+
+
 
 
